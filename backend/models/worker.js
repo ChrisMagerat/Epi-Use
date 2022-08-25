@@ -28,7 +28,6 @@ module.exports = (sequelize, DataTypes) => {
     employeeNumber: DataTypes.STRING,
     salary: DataTypes.INTEGER,
     role: DataTypes.STRING,
-    superior: DataTypes.STRING,
     uuid: {
       type:DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4

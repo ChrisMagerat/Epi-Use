@@ -10,8 +10,20 @@ app.use(cors());
 // Enable JSON body parsing for all routes
 app.use(express.json());
 
+async function main() {
+  await worker.isHierarchy().sync();
+  await sequelize.models.workerancestor.sync();
+}
+
+main();
+
 //Create a new worker
 app.post("/create", async (req, res) => {
+  const parent = await worker.findOne({
+    where: {
+      uuid:  req.body.superior,
+    },
+  });
   const Worker = await worker.create({
     name: req.body.name,
     surname: req.body.surname,
@@ -19,14 +31,14 @@ app.post("/create", async (req, res) => {
     employeeNumber: req.body.eNumber,
     salary: req.body.salary,
     role: req.body.role,
-    superior: req.body.superior,
+    parentId: parent.id,
   });
   console.log(req.body);
   res.json(Worker);
 });
 
 //Search Using Employee Number
-app.post("/search/:eNumber", async (req, res) => {
+app.post("/search", async (req, res) => {
   const Worker = await worker.findAll({
     where: {
       employeeNumber: req.body.searchByEmployeeNumber,
@@ -39,9 +51,9 @@ app.post("/search/:eNumber", async (req, res) => {
 app.post("/searchByDate", async (req, res) => {
   const Worker = await worker.findAll({
     where: {
-      dateOfBirth:{
-        [Op.gte]: req.body.searchByDate
-      }
+      dateOfBirth: {
+        [Op.gte]: req.body.searchByDate,
+      },
     },
   });
   res.json(Worker);
@@ -65,7 +77,7 @@ app.put("/update", async (req, res) => {
     },
     {
       where: {
-        employeeNumber: req.body.eNumber,
+        employeeNumber: req.body.employeeNumber,
       },
     }
   );
@@ -73,15 +85,15 @@ app.put("/update", async (req, res) => {
   res.json(Worker);
 }),
 
-//Delete an employee
-app.delete("/delete/:uuid", async (req, res) => {
-  const Worker = await worker.destroy({
-    where: {
-      uuid: req.params.uuid,
-    },
+  //Delete an employee
+  app.delete("/delete/:uuid", async (req, res) => {
+    const Worker = await worker.destroy({
+      where: {
+        uuid: req.params.uuid,
+      },
+    });
+    res.send("User Deleted");
   });
-  res.send("User Deleted");
-});
 
 //Get all superiors
 app.get("/superior", async (req, res) => {
@@ -96,6 +108,14 @@ app.get("/superior", async (req, res) => {
 //View all workrers
 app.get("/workers", async (req, res) => {
   const workers = await worker.findAll();
+  res.json(workers);
+});
+
+//View Hierarchy
+app.get("/hierarchy", async (req, res) => {
+  const workers = await worker.findAll({
+    hierarchy:true,
+  });
   res.json(workers);
 });
 

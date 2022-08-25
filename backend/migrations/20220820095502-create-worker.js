@@ -26,9 +26,6 @@ module.exports = {
       role: {
         type: Sequelize.STRING
       },
-      superior: {
-        type: Sequelize.STRING
-      },
       uuid: {
         type:Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4
