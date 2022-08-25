@@ -41,6 +41,7 @@ export default {
                     type: 'success'
                 })
                 this.deleteEmployee = null
+                this.fetchAll()
             })
         }
     }

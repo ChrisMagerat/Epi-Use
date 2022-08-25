@@ -21,12 +21,13 @@
                 <el-input placeholder="Input Surname" v-model="updateForm.surname" />
             </el-form-item>
             <el-form-item label="Date of Birth">
-                <el-date-picker type="date" placeholder="Pick a date" v-model="updateForm.dateOfBirth" style="width:100%" />
+                <el-date-picker type="date" placeholder="Pick a date" v-model="updateForm.dateOfBirth"
+                    style="width:100%" />
             </el-form-item>
             <el-form-item label="Salary">
                 <el-input placeholder="Input Salary" v-model="updateForm.salary" />
             </el-form-item>
-            <el-form-item label="Role" >
+            <el-form-item label="Role">
                 <el-select placeholder="Select a role" v-model="updateForm.role" style="width:100%">
                     <el-option label="Manager" value="Manager" />
                     <el-option label="Employee" value="Employee" />
@@ -35,7 +36,8 @@
             </el-form-item>
             <el-form-item v-if="updateForm.role == 'Employee' || updateForm.role == 'Trainee'" label="Superior">
                 <el-select v-model="updateForm.superior" style="width:100%">
-                    <el-option v-for="item in optionsSuperior" :key="item.uuid" :label="`${item.name} ${item.surname} - ${item.employeeNumber}`" :value="item.uuid" />
+                    <el-option v-for="item in optionsSuperior" :key="item.uuid"
+                        :label="`${item.name} ${item.surname} - ${item.employeeNumber}`" :value="item.uuid" />
                 </el-select>
             </el-form-item>
             <el-form-item>
@@ -78,11 +80,12 @@ export default {
             })
         },
         handelUpdate() {
-            this.$axios.put('/update',this.updateForm).then(() => {
+            this.$axios.put('/update', this.updateForm).then(() => {
                 this.$message({
                     message: 'Update Successfully',
                     type: 'success'
                 })
+                this.fetchSuperior()
             })
         },
         handelSearch() {

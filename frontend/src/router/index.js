@@ -1,16 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import createWorker from '../components/createWorker.vue'
+import searchWorker from '../components/searchWorker.vue'
 
 const routes = [
   {
     path: '/',
-    name: 'create',
-    component: createWorker
+    name: 'search',
+    component: searchWorker
   },
   {
-    path: '/search',
-    name: 'search',
-    component: () => import('../components/searchWorker.vue')
+    path: '/create',
+    name: 'create',
+    component: () => import('../components/createWorker.vue')
   },
   {
     path: '/update',

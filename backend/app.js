@@ -19,11 +19,16 @@ main();
 
 //Create a new worker
 app.post("/create", async (req, res) => {
-  const parent = await worker.findOne({
+  let parent = await worker.findOne({
     where: {
       uuid:  req.body.superior,
     },
   });
+  if (!parent) {
+    parent=null;
+  }else{
+    parent=parent.id;
+  }
   const Worker = await worker.create({
     name: req.body.name,
     surname: req.body.surname,
@@ -31,9 +36,8 @@ app.post("/create", async (req, res) => {
     employeeNumber: req.body.eNumber,
     salary: req.body.salary,
     role: req.body.role,
-    parentId: parent.id,
+    parentId: parent,
   });
-  console.log(req.body);
   res.json(Worker);
 });
 
@@ -59,11 +63,6 @@ app.post("/searchByDate", async (req, res) => {
   res.json(Worker);
 });
 
-app.get("/fullView", async (req, res) => {
-  console.log(req.params.date);
-  res.json(req.params.date);
-});
-
 //Update Worker
 app.put("/update", async (req, res) => {
   const Worker = await worker.update(
@@ -81,7 +80,6 @@ app.put("/update", async (req, res) => {
       },
     }
   );
-  console.log(req.body);
   res.json(Worker);
 }),
 
@@ -118,6 +116,19 @@ app.get("/hierarchy", async (req, res) => {
   });
   res.json(workers);
 });
+
+//Order by salary
+app.get("/orderBySalary", async (req, res) => {
+  const workers = await worker.findAll({
+    order: [["salary", "DESC"]],
+  });
+  res.json({
+    managers: workers.filter((worker) => worker.role === "Manager"),
+    employees: workers.filter((worker) => worker.role === "Employee"),
+    trainees: workers.filter((worker) => worker.role === "Trainee"),
+    total: workers.length
+  });
+})
 
 app.listen(port, () => {
   console.log(`Example app listening on port http://localhost:${port}`);

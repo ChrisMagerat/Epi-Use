@@ -1,8 +1,8 @@
 <template>
 <h1>Epi-Use Technical Assesment</h1>
   <nav>
-    <router-link to="/">Create User</router-link> |
-    <router-link to="/search">Search User</router-link> |
+    <router-link to="/">Search User</router-link> |
+    <router-link to="/create">Create User</router-link> |
     <router-link to="/update">Update User</router-link> |
     <router-link to="/delete">Delete User</router-link>
   </nav>

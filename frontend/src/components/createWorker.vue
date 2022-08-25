@@ -78,6 +78,7 @@ export default {
                     role: null,
                     superior: null
                 }
+                this.fetchSuperior()
             })
         },
     }
