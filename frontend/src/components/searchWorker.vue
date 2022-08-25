@@ -1,24 +1,23 @@
 <template>
-    <div>
+    <div class="page">
         <h1>Search For Employee</h1>
-        <el-form label-width="150px" style="width: 600px" v-model="searchForm">
+        <el-form label-width="150px" style="width: 600px" v-model="searchForm" label-position="top">
             <el-form-item label="Search For Employee">
                 <el-input placeholder="Input Employee Number Here" v-model="searchForm.searchByEmployeeNumber" />
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="handelSearch">Search
+                <el-button type="primary" @click="handelSearch" style="width:100%">Search
                 </el-button>
             </el-form-item>
             <el-form-item label="Search Date of Birth">
-                <el-date-picker type="date" placeholder="Pick a date" v-model="searchForm.searchByDate" />
+                <el-date-picker type="date" placeholder="Pick a date" v-model="searchForm.searchByDate" style="width:100%"/>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="searchByDate">Search by
+                <el-button type="primary" @click="searchByDate" style="width:100%">Search by
                     Date</el-button>
             </el-form-item>
-            <p>View Full Structure</p>
             <el-form-item>
-                <el-button type="primary" @click="handelFullView">View Full
+                <el-button type="primary" @click="handelFullView" style="width:100%">View Full
                     Structure</el-button>
             </el-form-item>
             <div>
@@ -29,7 +28,7 @@
                         </template>
                     </el-tree>
                     <span>
-                        <el-button @click="dialogFormVisible2 = false">Cancel</el-button>
+                        <el-button @click="dialogFormVisible2 = false" >Cancel</el-button>
                         <el-button type="primary" @click="dialogFormVisible2 = false">Confirm</el-button>
                     </span>
                 </el-dialog>

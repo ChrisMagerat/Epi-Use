@@ -1,14 +1,14 @@
 <template>
-    <div>
+    <div class="page">
         <h1>Delete</h1>
-        <el-form label-width="150px" style="width: 600px">
+        <el-form label-width="150px" style="width: 600px" label-position="top">
             <el-form-item label="Employee to Delete">
-                <el-select v-model="deleteEmployee">
+                <el-select v-model="deleteEmployee" style="width:100%">
                     <el-option v-for="item in deleteOptions" :key="item.uuid" :label="`${item.name} ${item.surname} - ${item.employeeNumber}`" :value="item.uuid" />
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="handelDelete">Delete</el-button>
+                <el-button type="primary" @click="handelDelete" style="width:100%">Delete</el-button>
             </el-form-item>
         </el-form>
     </div>
