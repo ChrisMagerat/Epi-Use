@@ -23,9 +23,11 @@
             </el-form-item>
             <div>
                 <el-dialog title="Full Structure" v-model="dialogFormVisible2" width="50%">
-                    <div v-if="searchResults.length > 0">
-                        <el-tree :data="treeData" :props="defealtProps" />
-                    </div>
+                    <el-tree :data="hierarchyData" style="margin-bottom: 20px">
+                        <template #default="{ data }">
+                            {{ data.name }} {{data.surname}} - {{data.dateOfBirth.split("T")[0]}} - R{{data.salary}}
+                        </template>
+                    </el-tree>
                     <span>
                         <el-button @click="dialogFormVisible2 = false">Cancel</el-button>
                         <el-button type="primary" @click="dialogFormVisible2 = false">Confirm</el-button>
@@ -36,8 +38,26 @@
         <div>
             <el-dialog title="Users" v-model="dialogFormVisible" width="50%">
                 <div v-if="searchResults.length > 0">
-                    <p v-for="Employee in searchResults" :key="Employee.uuid">{{ Employee.name }} {{ Employee.surname
-                    }} {{ Employee.dateOfBirth }} R{{ Employee.salary }}</p>
+                    <table style="width: 100%; text-align: left; margin-bottom: 20px;" class="resultTable">
+                        <thead>
+                            <tr>
+                                <th>Employee Number</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Date of Birth</th>
+                                <th>Salary</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item) in searchResults" :key="item.uuid">
+                                <td>{{ item.employeeNumber }}</td>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.surname }}</td>
+                                <td>{{ item.dateOfBirth.split("T")[0] }}</td>
+                                <td>R{{ item.salary }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <span>
                     <el-button @click="dialogFormVisible = false">Cancel</el-button>
@@ -60,20 +80,7 @@ export default {
             searchResults: [],
             dialogFormVisible: false,
             dialogFormVisible2: false,
-            defealtProps: {
-                label: 'Parent',
-                children: [
-                    {
-                        label: 'Child'
-                    }
-                ]
-            },
-            treeData: [{
-                label: 'Parent',
-                children: [{
-                    label: 'Child'
-                }]
-            }]
+            hierarchyData: [],
         }
     },
     methods: {
@@ -89,24 +96,37 @@ export default {
             this.dialogFormVisible = true;
         },
         handelSearch() {
-            this.$axios.post('/search/${this.searchForm.searchByEmployeeNumber}', {
+            this.$axios.post('/search', {
                 searchByEmployeeNumber: this.searchForm.searchByEmployeeNumber
             }).then(response => {
                 this.searchResults = response.data;
                 console.log(response.data)
+                this.dialogFormVisible = true;
             }).catch(error => {
                 console.log(error)
             })
-            this.dialogFormVisible = true;
         },
         handelFullView() {
-            this.$axios.get('/workers').then(response => {
-                this.searchResults = response.data
-                console.log(this.searchResults)
-                this.treeData = this.searchResults
+            this.$axios.get('/hierarchy').then(response => {
+                this.hierarchyData = response.data
+                console.log(this.hierarchyData)
+                this.dialogFormVisible2 = true;
             })
-            this.dialogFormVisible2 = true;
         }
     }
 }
 </script>
+
+<style scoped>
+.resultTable,
+.resultTable th,
+.resultTable td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 5px;
+}
+</style>

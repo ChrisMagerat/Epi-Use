@@ -1,11 +1,10 @@
 <template>
-
     <div>
         <h1>Update Employee</h1>
         <el-form label-width="150px" style="width: 600px" v-model="updateForm">
             <el-form-item label="Employee Number">
                 <el-col :span="11">
-                    <el-input placeholder="Input Employee Number" v-model="updateForm.eNumber" />
+                    <el-input placeholder="Input Employee Number" v-model="updateForm.employeeNumber" />
                 </el-col>
                 <el-col :span="2">
                     <el-button circle @click="handelSearch" style="margin-left: 10px">
@@ -22,7 +21,7 @@
                 <el-input placeholder="Input Surname" v-model="updateForm.surname" />
             </el-form-item>
             <el-form-item label="Date of Birth">
-                <el-date-picker type="date" placeholder="Pick a date" v-model="updateForm.DoB" />
+                <el-date-picker type="date" placeholder="Pick a date" v-model="updateForm.dateOfBirth" />
             </el-form-item>
             <el-form-item label="Salary">
                 <el-input placeholder="Input Salary" v-model="updateForm.salary" />
@@ -56,14 +55,13 @@ export default {
             updateForm: {
                 name: null,
                 surname: null,
-                DoB: null,
-                eNumber: null,
+                dateOfBirth: null,
+                employeeNumber: null,
                 salary: null,
                 role: null,
                 superior: null
             },
             searchResults: [],
-            options: [],
             optionsSuperior: [],
         }
     },
@@ -71,7 +69,6 @@ export default {
         Search
     },
     created() {
-        this.fetchAll(),
         this.fetchSuperior()
     },
     methods: {
@@ -80,15 +77,8 @@ export default {
                 this.optionsSuperior = response.data
             })
         },
-        fetchAll() {
-            this.$axios.get('/workers').then(response => {
-                this.options = response.data
-            })
-        },
         handelUpdate() {
-            this.$axios.put('/update', {
-                updateForm: this.updateForm
-            }).then(() => {
+            this.$axios.put('/update',this.updateForm).then(() => {
                 this.$message({
                     message: 'Update Successfully',
                     type: 'success'
@@ -96,11 +86,10 @@ export default {
             })
         },
         handelSearch() {
-            this.$axios.post('/search/${updateForm.eNumber}', {
-                searchByEmployeeNumber: this.updateForm.eNumber
+            this.$axios.post('/search', {
+                searchByEmployeeNumber: this.updateForm.employeeNumber
             }).then(response => {
-                this.searchResults = response.data;
-                console.log(response.data)
+                this.updateForm = response.data[0];
             }).catch(error => {
                 console.log(error)
             })
