@@ -104,7 +104,8 @@
                 <el-dialog title="Full Structure" v-model="dialogFormVisible2" width="50%">
                     <el-tree :data="hierarchyData" style="margin-bottom: 20px">
                         <template #default="{ data }">
-                            {{ data.name }} {{ data.surname }} - {{ data.dateOfBirth.split("T")[0] }} - R{{ data.salary
+                            {{ data.role }} {{ data.name }} {{ data.surname }} - {{ data.dateOfBirth.split("T")[0] }} -
+                            R{{ data.salary
                             }}
                         </template>
                     </el-tree>
@@ -121,6 +122,7 @@
                     <table style="width: 100%; text-align: left; margin-bottom: 20px;" class="resultTable">
                         <thead>
                             <tr>
+                                <th>Role</th>
                                 <th>Employee Number</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
@@ -130,6 +132,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="(item) in searchResults" :key="item.uuid">
+                                <td>{{ item.role }}</td>
                                 <td>{{ item.employeeNumber }}</td>
                                 <td>{{ item.name }}</td>
                                 <td>{{ item.surname }}</td>

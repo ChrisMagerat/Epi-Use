@@ -1,5 +1,5 @@
 <template>
-<h1>Epi-Use Technical Assesment</h1>
+<h1>Epi-Use Technical Assessment</h1>
   <nav>
     <router-link to="/">Search User</router-link> |
     <router-link to="/create">Create User</router-link> |
